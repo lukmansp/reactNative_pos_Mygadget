@@ -20,7 +20,7 @@ export default products = (state = initialState, action) => {
     case 'GET_PRODUCTS_FULFILLED':
       return {
         ...state,
-        products: action.payload.data.data,
+        products: action.payload.data.result,
         isLoading: false,
       };
     case 'POST_PRODUCTS_PENDING':

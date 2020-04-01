@@ -7,15 +7,21 @@ import {
   TextInput,
   ScrollView,
   TouchableOpacity,
+  Alert,
 } from 'react-native';
 import {SearchBar, Card, ListItem, Button, Icon} from 'react-native-elements';
 import {connect} from 'react-redux';
-import {getProducts} from '../../redux/actions/product';
+import {getProducts, deleteProduct} from '../../redux/actions/product';
 import {addCart} from '../../redux/actions/cart';
+import {logout} from '../../redux/actions/auth';
 import {searchProducts} from '../../redux/actions/product';
 import {FlatList} from 'react-native-gesture-handler';
 import Icons from 'react-native-vector-icons/MaterialCommunityIcons';
 class HomeScreen extends Component {
+  static navigationOptions = {
+    header: null,
+  };
+
   constructor(props) {
     super(props);
     this.state = {
@@ -41,10 +47,24 @@ class HomeScreen extends Component {
     await this.props.dispatch(searchProducts(search, this.state.category));
     // console.log(search);
   };
+  onDelete = productId => {
+    Alert.alert('Alert Title', 'Deleted this ?..', [
+      {text: 'NO', style: 'cancel'},
+      {
+        text: 'Yes',
+        onPress: () => this.props.dispatch(deleteProduct(productId)),
+      },
+    ]);
+  };
+  logout = () => {
+    this.props.dispatch(logout());
+    this.props.navigation.navigate('Login');
+  };
   componentDidMount() {
     this.getProducts();
   }
   renderRow = ({item}) => {
+    console.disableYellowBox = true;
     return (
       <View style={{width: 190, marginLeft: -6}}>
         <Card title={item.name}>
@@ -72,7 +92,9 @@ class HomeScreen extends Component {
               }>
               <Icons name="lead-pencil" size={25} />
             </TouchableOpacity>
-            <TouchableOpacity style={{marginLeft: 20}}>
+            <TouchableOpacity
+              style={{marginLeft: 20}}
+              onPress={this.onDelete.bind(this, item.id)}>
               <Icons name="trash-can" size={25} />
             </TouchableOpacity>
           </View>
@@ -102,7 +124,7 @@ class HomeScreen extends Component {
         <ScrollView>
           <View>
             <Image
-              source={require('../../image/promo.jpg')}
+              source={require('../../images/promo.jpg')}
               style={styles.promo}
             />
           </View>
@@ -115,7 +137,7 @@ class HomeScreen extends Component {
               <Text style={styles.status}>Cashier</Text>
             </View>
             <Image
-              source={require('../../image/_DSC6834.jpg')}
+              source={require('../../images/_DSC6834.jpg')}
               style={{
                 marginLeft: 225,
                 borderRadius: 80,
@@ -123,6 +145,14 @@ class HomeScreen extends Component {
                 height: 100,
               }}
             />
+            <View style={styles.bcklogout}>
+              <TouchableOpacity
+                style={{alignSelf: 'center'}}
+                onPress={this.logout}>
+                <Text style={{marginTop: 5, color: 'white'}}>Logout</Text>
+              </TouchableOpacity>
+            </View>
+
             <View style={styles.infoCard}>
               <View style={styles.infotext}>
                 <Text>Name: Lukman Sefriyanto</Text>
@@ -152,6 +182,18 @@ const mapStateToProps = state => {
 };
 
 const styles = StyleSheet.create({
+  bcklogout: {
+    backgroundColor: '#E9446A',
+    width: 70,
+    height: 40,
+    borderRadius: 8,
+    borderWidth: 5,
+    borderColor: '#efecea',
+    marginLeft: 5,
+    marginTop: -70,
+    marginBottom: 35,
+    alignItems: 'flex-start',
+  },
   titleBanner: {
     backgroundColor: 'white',
     width: 110,

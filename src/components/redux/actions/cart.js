@@ -30,7 +30,7 @@ export const postOrder = data => {
     type: 'POST_ORDER',
     payload: axios({
       method: 'POST',
-      url: 'http://192.168.1.16:9009/order',
+      url: 'http://20.20.20.131:9009/order',
       data: data,
     }),
   };

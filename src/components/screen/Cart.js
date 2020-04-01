@@ -57,19 +57,22 @@ class CartProduct extends Component {
   };
   onOrder = async e => {
     e.preventDefault();
-
+    let product = [];
+    this.props.carts.map(cart => {
+      product.push({
+        id_product: cart.id,
+        quantity: cart.quantity,
+      });
+    });
     const data = {
-      id_product: this.props.carts[0].id,
-      user: this.props.carts[0].name,
-      quantity: this.props.carts[0].quantity,
-      price: this.props.carts[0].price,
-      stock: this.props.carts[0].stock,
+      id_user: this.props.carts[0].name,
+      total: this.props.total,
+      product: product,
     };
     await this.props.dispatch(postOrder(data));
-    console.log(this.props.response);
     if (this.props.response == 200) {
       alert('success', 'order success');
-    } else {
+    } else if (this.props.response == 500) {
       alert('Error', 'Failed order');
     }
   };

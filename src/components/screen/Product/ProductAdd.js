@@ -57,11 +57,9 @@ class ProductAdd extends React.Component {
     data.append('category_id', this.state.category_id);
     data.append('price', this.state.price);
     data.append('stock', this.state.stock);
-    // axios.post('http://192.168.1.2:9009/product', data);
-    // console.log(data);
     await this.props.dispatch(postProduct(data));
     if (!this.props.products.isLoading) {
-      this.props.navigation.navigate('Product');
+      this.props.navigation.navigate('Home');
     }
   };
 

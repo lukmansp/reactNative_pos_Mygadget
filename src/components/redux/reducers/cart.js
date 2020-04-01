@@ -34,10 +34,12 @@ const cart = (state = initialState, action) => {
         product => product.id === action.payload.id,
       );
       if (existedCartData) {
+        console.log(action.payload);
         return {
           ...state,
           carts: filterCartId,
           total: state.total + action.payload.price,
+          purchase: state.purchase + 1,
         };
       } else {
         let newTotal = state.total + action.payload.price;
@@ -46,6 +48,7 @@ const cart = (state = initialState, action) => {
           ...state,
           carts: [...state.carts, action.payload],
           total: newTotal,
+          purchase: state.purchase + 1,
         };
       }
     case 'DELETE_CART_DATA':
